@@ -39,6 +39,8 @@ namespace Picadely.UI
                     Response.Redirect("~/Dashboard.aspx");
                 else if (user.Tipo == UsuarioTipo.Cliente.ToString())
                     Response.Redirect("~/DashboardCliente.aspx");
+                else if (user.Tipo == UsuarioTipo.WebMaster.ToString())
+                    Response.Redirect("~/DashboardWebMaster.aspx");
 
             }
         }

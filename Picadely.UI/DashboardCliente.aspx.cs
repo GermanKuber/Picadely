@@ -11,6 +11,10 @@ namespace Picadely.UI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            var usuario = Session["UsuarioLogueado"] as Usuario;
+            if (usuario.Tipo != UsuarioTipo.Cliente.ToString())
+                Response.Redirect("Login.aspx");
+
             var picadasServices = new PicadasServices();
             var picadas = picadasServices.GetPicadas();
 

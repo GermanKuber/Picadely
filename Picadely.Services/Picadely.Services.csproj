@@ -41,9 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComprasServices.cs" />
     <Compile Include="HashService.cs" />
     <Compile Include="LoginService.cs" />
+    <Compile Include="PicadasServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TipoLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Picadely.Data\Picadely.Data.csproj">

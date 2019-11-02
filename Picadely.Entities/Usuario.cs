@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Picadely.Entities
 {
+    public class DetalleCompra
+    {
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public string Direccion { get; set; }
+        public string PicadaNombre { get; set; }
+
+    }
     public class Picada
     {
         public int Id { get; set; }
@@ -15,7 +23,8 @@ namespace Picadely.Entities
     public enum UsuarioTipo
     {
         Admin,
-        Cliente
+        Cliente,
+        WebMaster
     }
     public class Usuario
     {
@@ -25,5 +34,12 @@ namespace Picadely.Entities
         public string Apellido { get; set; }
         public string Tipo { get; set; }
         public string Direccion { get; set; }
+    }
+    public class Log
+    {
+        public string Tipo { get; set; }
+        public string Fecha { get; set; }
+        public string Email { get; set; }
+        public string Descripcion { get; set; }
     }
 }

@@ -114,6 +114,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Dashboard.aspx" />
     <Content Include="DashboardCliente.aspx" />
+    <Content Include="DashboardWebMaster.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -193,6 +194,13 @@
     </Compile>
     <Compile Include="DashboardCliente.aspx.designer.cs">
       <DependentUpon>DashboardCliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWebMaster.aspx.cs">
+      <DependentUpon>DashboardWebMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DashboardWebMaster.aspx.designer.cs">
+      <DependentUpon>DashboardWebMaster.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
