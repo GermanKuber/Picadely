@@ -178,6 +178,26 @@ namespace Picadely.Services
             }
 
         }
+        public void Backup()
+        {
+            using (SqlConnection cn = new SqlConnection(_connectionString))
+            using (SqlCommand cmd = new SqlCommand("Backup database Picadely to disk='c:/Backup/Picadely.bak'", cn))
+            {
+                cn.Open();
+                cmd.ExecuteNonQuery();
+                cn.Close();
+            }
+        }
+        public void Restore()
+        {
+            using (SqlConnection cn = new SqlConnection(_connectionString))
+            using (SqlCommand cmd = new SqlCommand("ALTER DATABASE Picadely  SET OFFLINE WITH ROLLBACK IMMEDIATE RESTORE DATABASE Picadely FROM DISK = 'c:/Backup/Picadely.bak' WITH REPLACE ALTER DATABASE Picadely SET ONLINE", cn))
+            {
+                cn.Open();
+                cmd.ExecuteNonQuery();
+                cn.Close();
+            }
+        }
 
         public void ExcecuteQueryAsync(string query, List<Parameter> parameters) =>
              ExecuteCommandAsync(query, parameters, cmd => cmd.ExecuteNonQueryAsync());
