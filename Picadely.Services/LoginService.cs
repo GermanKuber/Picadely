@@ -1,26 +1,44 @@
 ﻿using Picadely.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace Picadely.Services
 {
-    public class PicadasServices
+    public class ComprasServices
     {
-        public async Task<List<Picada>> GetPicadas()
+        public void Comprar(Usuario usuario, Picada picada)
         {
             var sqlService = new SqlAccessService();
 
-            var dataTable = await sqlService.SelectData("Picadas", new Parameters().Send());
+            sqlService.InsertDataAsync("Compras", new Parameters().Add("Usuario_Id", usuario.Id.ToString())
+                                                                  .Add("Picada_Id", picada.Id.ToString()));
+            sqlService.InsertDataAsync("Logs", new Parameters()
+                               .Add("Tipo", TipoLog.Informacion.ToString())
+                               .Add("Fecha", DateTime.Now)
+                               .Add("Email", usuario.Email)
+                               .Add("Descripcion", $"Se realizo una compra de {picada.Nombre}"));
+        }
+
+    }
+    public class PicadasServices
+    {
+        public List<Picada> GetPicadas()
+        {
+            var sqlService = new SqlAccessService();
+
+            var dataTable = sqlService.SelectDatas("Picadas", new List<string> { "Id", "Nombre", "Comensales" });
 
             var picadas = new List<Picada>();
-            foreach (var row in dataTable.Rows)
+            foreach (DataRow row in dataTable.Rows)
             {
                 picadas.Add(new Picada
                 {
-                    Nombre = dataTable.Rows[0]["Nombre"].ToString(),
-                    Comensales = int.Parse(dataTable.Rows[0]["Comensales"].ToString()),
-                    Id = int.Parse(dataTable.Rows[0]["Id"].ToString())
+
+                    Nombre = row["Nombre"].ToString(),
+                    Comensales = int.Parse(row["Comensales"].ToString()),
+                    Id = int.Parse(row["Id"].ToString())
                 });
             }
             return picadas;
@@ -35,7 +53,7 @@ namespace Picadely.Services
     }
     public class LoginService
     {
-        public async Task<Usuario> LoginAsync(string email, string password)
+        public Usuario LoginAsync(string email, string password)
         {
 
             var sqlService = new SqlAccessService();
@@ -43,17 +61,17 @@ namespace Picadely.Services
 
             var passwordHash = hashService.Hash(password);
 
-            var dataTable = await sqlService.SelectData("Usuarios", new Parameters()
+            var dataTable = sqlService.SelectData("Usuarios", new Parameters()
                                                     .Add("Email", email)
                                                     .Add("Password", passwordHash)
                                                     .Send());
             if (dataTable.Rows.Count == 0)
             {
-                await sqlService.InsertDataAsync("Logs", new Parameters()
-                                  .Add("Tipo", TipoLog.Alerta.ToString())
-                                  .Add("Fecha", DateTime.Now)
-                                  .Add("Email", email)
-                                  .Add("Descripcion", "Intento de login fallido"));
+                sqlService.InsertDataAsync("Logs", new Parameters()
+                                 .Add("Tipo", TipoLog.Alerta.ToString())
+                                 .Add("Fecha", DateTime.Now)
+                                 .Add("Email", email)
+                                 .Add("Descripcion", "Intento de login fallido"));
                 return null;
             }
             var user = new Usuario
@@ -68,11 +86,11 @@ namespace Picadely.Services
 
 
 
-            await sqlService.InsertDataAsync("Logs", new Parameters()
-                .Add("Tipo", TipoLog.Informacion.ToString())
-                .Add("Fecha", DateTime.Now)
-                .Add("Email", user.Email)
-                .Add("Descripcion", "Login de Usuario"));
+            sqlService.InsertDataAsync("Logs", new Parameters()
+               .Add("Tipo", TipoLog.Informacion.ToString())
+               .Add("Fecha", DateTime.Now)
+               .Add("Email", user.Email)
+               .Add("Descripcion", "Login de Usuario"));
 
             return user;
         }

@@ -24,12 +24,12 @@ namespace Picadely.UI
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// DLPicadas control.
+        /// GridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataList DLPicadas;
+        protected global::System.Web.UI.WebControls.GridView GridView;
     }
 }

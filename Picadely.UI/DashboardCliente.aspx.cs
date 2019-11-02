@@ -1,6 +1,9 @@
-﻿using Picadely.Services;
+﻿using Picadely.Entities;
+using Picadely.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 
 namespace Picadely.UI
 {
@@ -9,9 +12,27 @@ namespace Picadely.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             var picadasServices = new PicadasServices();
-            var picadas =  picadasServices.GetPicadas().GetAwaiter().GetResult();
+            var picadas = picadasServices.GetPicadas();
 
-            DLPicadas.DataSource = picadas;
+            GridView.DataSource = picadas;
+            GridView.DataBind();
+        }
+
+        protected void GridView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void GridView_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            var picadasServices = new PicadasServices();
+            var picadas = picadasServices.GetPicadas();
+            var index = int.Parse(e.CommandArgument.ToString());
+            var selectedPicada = picadas.ElementAt(index);
+            var compraService = new ComprasServices();
+
+            var usuario = Session["UsuarioLogueado"] as Usuario;
+            compraService.Comprar(usuario, selectedPicada);
         }
     }
 }

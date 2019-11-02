@@ -18,7 +18,7 @@ namespace Picadely.UI
 
         }
 
-        protected async void BtnLogin_Click(object sender, EventArgs e)
+        protected  void BtnLogin_Click(object sender, EventArgs e)
         {
             var email = TxtEmail.Text;
             var password = TxtPassword.Text;
@@ -26,7 +26,7 @@ namespace Picadely.UI
             var loginService = new LoginService();
 
 
-            var user = await loginService.LoginAsync(email, password);
+            var user =  loginService.LoginAsync(email, password);
             if (user == null)
             {
                 LblError.Text = "Error al ingresar passwor o email";

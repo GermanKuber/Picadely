@@ -3,45 +3,45 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Picadely.Services
 {
     public class SqlAccessService
     {
         private readonly string _connectionString;
-        private  string _dataTableName;
+        private string _dataTableName;
 
         public SqlAccessService()
         {
             _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Picadely;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
-        public async Task<DataTable> SelectData(List<string> selectColumns) =>
-            await SelectData(null, selectColumns);
-        public async Task<DataTable> SelectData(string tableName, List<Parameter> parameters)
+        public DataTable SelectDatas(string tableName, List<string> selectColumns)
         {
             _dataTableName = tableName;
-            return await SelectData(parameters, null);
+            return SelectData(null, selectColumns);
         }
-
-        public async Task<DataTable> SelectData(string query)
+        public DataTable SelectData(string tableName, List<Parameter> parameters)
         {
-            return await Task.Run(async () =>
-            {
-                SqlConnection conn = new SqlConnection(_connectionString);
-                SqlCommand command = new SqlCommand(query, conn);
-                await conn.OpenAsync();
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                da.Fill(dataTable);
-                conn.Close();
-                da.Dispose();
-                return dataTable;
-            });
+            _dataTableName = tableName;
+            return SelectData(parameters, null);
         }
 
-        public async Task<DataTable> SelectDataIn(Parameters propertyToCheckIn, Parameters parametersForPutIn, List<string> selectColumns)
+        public DataTable SelectData(string query)
+        {
+
+            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlCommand command = new SqlCommand(query, conn);
+            conn.Open();
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dataTable = new DataTable();
+            da.Fill(dataTable);
+            conn.Close();
+            da.Dispose();
+            return dataTable;
+
+        }
+
+        public DataTable SelectDataIn(Parameters propertyToCheckIn, Parameters parametersForPutIn, List<string> selectColumns)
         {
             string query = "SELECT ";
 
@@ -58,22 +58,19 @@ namespace Picadely.Services
             }).ToList()));
             query = query.Remove(query.Length - 1);
             query = String.Concat(query, ")");
-            return await Task.Run(async () =>
-            {
-                SqlConnection conn = new SqlConnection(_connectionString);
-                SqlCommand command = new SqlCommand(query, conn);
-                await conn.OpenAsync();
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                da.Fill(dataTable);
-                conn.Close();
-                da.Dispose();
-                return dataTable;
-            });
+            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlCommand command = new SqlCommand(query, conn);
+            conn.Open();
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dataTable = new DataTable();
+            da.Fill(dataTable);
+            conn.Close();
+            da.Dispose();
+            return dataTable;
 
         }
 
-        public async Task<DataTable> SelectData(List<Parameter> parameters, List<string> selectColumns)
+        public DataTable SelectData(List<Parameter> parameters, List<string> selectColumns)
         {
             string query = "SELECT ";
 
@@ -91,40 +88,39 @@ namespace Picadely.Services
                     return $" {value.ColumnName}=@{value.ColumnName}";
                 }).ToList()));
             }
-            return await Task.Run(async () =>
-            {
-                SqlConnection conn = new SqlConnection(_connectionString);
-                SqlCommand command = new SqlCommand(query, conn);
-                if (parameters != null)
-                    command.Parameters.AddRange(parameters.Select(parameter =>
-                    {
-                        return new SqlParameter($"@{parameter.ColumnName}", parameter.Value);
-                    }).ToArray());
-                await conn.OpenAsync();
 
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                da.Fill(dataTable);
-                conn.Close();
-                da.Dispose();
-                return dataTable;
-            });
+            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlCommand command = new SqlCommand(query, conn);
+            if (parameters != null)
+                command.Parameters.AddRange(parameters.Select(parameter =>
+                {
+                    return new SqlParameter($"@{parameter.ColumnName}", parameter.Value);
+                }).ToArray());
+            conn.Open();
+
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dataTable = new DataTable();
+            da.Fill(dataTable);
+            conn.Close();
+            da.Dispose();
+            return dataTable;
+
 
         }
-        public async Task<int> InsertDataAsync(string tableName, Parameters parameters)
+        public int InsertDataAsync(string tableName, Parameters parameters)
         {
             _dataTableName = tableName;
-            return await InsertDataAsync(parameters.Send());
+            return InsertDataAsync(parameters.Send());
         }
-        private async Task<int> InsertDataAsync(List<Parameter> parameters, string tableName = null)
+        private int InsertDataAsync(List<Parameter> parameters, string tableName = null)
         {
             if (string.IsNullOrWhiteSpace(tableName))
                 tableName = _dataTableName;
-            return await ExecuteScalarAsync($"INSERT INTO dbo.{tableName} ({string.Join(",", parameters.Select(x => x.ColumnName).ToList())}) " +
+            return ExecuteScalarAsync($"INSERT INTO dbo.{tableName} ({string.Join(",", parameters.Select(x => x.ColumnName).ToList())}) " +
                           $"VALUES ({string.Join(",", parameters.Select(key => $"@{key.ColumnName}").ToList())}) ; SELECT SCOPE_IDENTITY()", parameters);
         }
 
-        public async Task DeleteAsync(Parameters where = default)
+        public void DeleteAsync(Parameters where = default)
         {
 
             string query = $"DELETE  FROM dbo.{_dataTableName}";
@@ -135,9 +131,9 @@ namespace Picadely.Services
             var parametersToAdd = new List<Parameter>();
             if (where != null)
                 parametersToAdd.AddRange(where.Send());
-            await ExcecuteQueryAsync(query, parametersToAdd);
+            ExcecuteQueryAsync(query, parametersToAdd);
         }
-        public async Task UpdateAsync(Parameters parameters, Parameters where = default)
+        public void UpdateAsync(Parameters parameters, Parameters where = default)
         {
             var parametersToAdd = parameters.Send();
             string query = $"UPDATE  dbo.{_dataTableName} SET {string.Join(",", parametersToAdd.Select(value => $"{value.ColumnName} = @{value.ColumnName}").ToList())}";
@@ -147,17 +143,17 @@ namespace Picadely.Services
             query = string.Concat(query, ";");
             if (where != null)
                 parametersToAdd.AddRange(where.Send());
-            await ExcecuteQueryAsync(query, parametersToAdd);
+            ExcecuteQueryAsync(query, parametersToAdd);
         }
 
-        private async Task<int> ExecuteScalarAsync(string query, List<Parameter> parameters)
+        private int ExecuteScalarAsync(string query, List<Parameter> parameters)
         {
             var identity = 0;
-            await ExecuteCommandAsync(query, parameters, async cmd => identity = decimal.ToInt32((decimal)(cmd.ExecuteScalar())));
+            ExecuteCommandAsync(query, parameters, cmd => identity = decimal.ToInt32((decimal)(cmd.ExecuteScalar())));
             return identity;
         }
 
-        private async Task ExecuteCommandAsync(string query, List<Parameter> parameters, Func<SqlCommand, Task> executeFunction)
+        private void ExecuteCommandAsync(string query, List<Parameter> parameters, Action<SqlCommand> executeFunction)
         {
             using (SqlConnection cn = new SqlConnection(_connectionString))
             using (SqlCommand cmd = new SqlCommand(query, cn))
@@ -176,14 +172,14 @@ namespace Picadely.Services
                     };
                 }).ToArray());
 
-                await cn.OpenAsync();
-                await executeFunction(cmd);
+                cn.Open();
+                executeFunction(cmd);
                 cn.Close();
             }
 
         }
 
-        public async Task ExcecuteQueryAsync(string query, List<Parameter> parameters) =>
-            await ExecuteCommandAsync(query, parameters, async cmd => await cmd.ExecuteNonQueryAsync());
+        public void ExcecuteQueryAsync(string query, List<Parameter> parameters) =>
+             ExecuteCommandAsync(query, parameters, cmd => cmd.ExecuteNonQueryAsync());
     }
 }
