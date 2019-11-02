@@ -34,7 +34,7 @@ namespace Picadely.Services
         {
             var sqlService = new SqlAccessService();
 
-            var dataTable = sqlService.SelectDatas("Logs", new List<string> { "Id", "Tipo", "Fecha", "Email", "Descripcion" });
+            var dataTable = sqlService.SelectDatas("Logs", new List<string> { "Id", "Tipo", "Fecha", "Email", "Descripcion","Digito" });
 
             var logs = new List<Log>();
             foreach (DataRow row in dataTable.Rows)
@@ -45,6 +45,7 @@ namespace Picadely.Services
                     Email = row["Email"].ToString(),
                     Descripcion = row["Descripcion"].ToString(),
                     Fecha = row["Fecha"].ToString(),
+                    Digito = row["Digito"].ToString(),
                     Tipo = row["Tipo"].ToString(),
                 });
             }

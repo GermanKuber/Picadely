@@ -24,6 +24,7 @@ namespace Picadely.Services
                                  .Add("Tipo", TipoLog.Alerta.ToString())
                                  .Add("Fecha", DateTime.Now)
                                  .Add("Email", email)
+                                 .Add("Digito", hashService.Hash(TipoLog.Alerta.ToString() + DateTime.Now + email + "Intento de login fallido"))
                                  .Add("Descripcion", "Intento de login fallido"));
                 return null;
             }
@@ -43,6 +44,7 @@ namespace Picadely.Services
                .Add("Tipo", TipoLog.Informacion.ToString())
                .Add("Fecha", DateTime.Now)
                .Add("Email", user.Email)
+               .Add("Digito", hashService.Hash(TipoLog.Informacion.ToString() + DateTime.Now + email + "Login de Usuario"))
                .Add("Descripcion", "Login de Usuario"));
 
             return user;

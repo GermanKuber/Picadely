@@ -16,6 +16,7 @@ namespace Picadely.Services
             sqlService.InsertDataAsync("Logs", new Parameters()
                                .Add("Tipo", TipoLog.Informacion.ToString())
                                .Add("Fecha", DateTime.Now)
+                               .Add("Digito", new HashService().Hash(TipoLog.Informacion.ToString() + DateTime.Now + usuario.Email + $"Se realizo una compra de {picada.Nombre}"))
                                .Add("Email", usuario.Email)
                                .Add("Descripcion", $"Se realizo una compra de {picada.Nombre}"));
         }

@@ -33,6 +33,8 @@ namespace Picadely.UI
             }
             else
             {
+               
+
                 Session["UsuarioLogueado"] = user;
 
                 if (user.Tipo == UsuarioTipo.Admin.ToString())

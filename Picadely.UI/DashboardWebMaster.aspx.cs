@@ -14,9 +14,18 @@ namespace Picadely.UI
                 Response.Redirect("Login.aspx");
             var logsServices = new LogServices();
             var logs = logsServices.Get();
-
+            var hashServices = new HashService();
+            foreach (var log in logs)
+            {
+                var hash = hashServices.Hash(log.Tipo + log.Fecha + log.Email + log.Descripcion);
+                if (hash != log.Digito)
+                    log.Corrompido = true;
+            }
             GridView.DataSource = logs;
             GridView.DataBind();
+
+
+           
         }
 
         protected void Button1_Click(object sender, EventArgs e)
