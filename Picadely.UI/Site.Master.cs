@@ -15,7 +15,7 @@ namespace Picadely.UI
         {
             var comprasService = new ComprasServices();
             if (!comprasService.IsValid())
-                throw new Exception("Error de datos");
+                Response.Redirect("/Error");
 
             var usuario = Session["UsuarioLogueado"] as Usuario;
             if (usuario == null)

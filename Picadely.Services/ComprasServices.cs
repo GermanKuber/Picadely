@@ -38,6 +38,8 @@ namespace Picadely.Services
         public bool IsValid()
         {
             var hashes = sqlService.SelectData("select Digito from Compras");
+            if (hashes.Rows.Count == 0)
+                return true;
             var completo = string.Empty;
             foreach (DataRow item in hashes.Rows)
                 completo = completo + item["Digito"];
