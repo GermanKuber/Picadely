@@ -24,8 +24,16 @@ namespace Picadely.UI
             GridView.DataSource = logs;
             GridView.DataBind();
 
-
-           
+            var comprasServices = new ComprasServices();
+            var compras = comprasServices.GetPedidos();
+            foreach (var compa in compras)
+            {
+                var hash = hashServices.Hash(compa.UsuarioId.ToString() +  compa.PicadaId.ToString() + compa.Fecha.Date.ToString());
+                if (hash != compa.Digito)
+                    compa.Corrompido = true;
+            }
+            GdvCompras.DataSource = compras;
+            GdvCompras.DataBind();
         }
 
         protected void Button1_Click(object sender, EventArgs e)

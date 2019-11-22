@@ -145,6 +145,18 @@ namespace Picadely.Services
                 parametersToAdd.AddRange(where.Send());
             ExcecuteQueryAsync(query, parametersToAdd);
         }
+        public void UpdateAsync(string table, Parameters parameters, Parameters where = default)
+        {
+            var parametersToAdd = parameters.Send();
+            string query = $"UPDATE  dbo.{table} SET {string.Join(",", parametersToAdd.Select(value => $"{value.ColumnName} = @{value.ColumnName}").ToList())}";
+
+            if (where != null)
+                query = string.Concat(query, " WHERE ", string.Join(" AND ", where.Send().Select(x => $"{x.ColumnName}=@{x.ColumnName}")));
+            query = string.Concat(query, ";");
+            if (where != null)
+                parametersToAdd.AddRange(where.Send());
+            ExcecuteQueryAsync(query, parametersToAdd);
+        }
 
         private int ExecuteScalarAsync(string query, List<Parameter> parameters)
         {

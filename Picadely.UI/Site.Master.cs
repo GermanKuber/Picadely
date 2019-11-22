@@ -1,4 +1,5 @@
 ﻿using Picadely.Entities;
+using Picadely.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,10 @@ namespace Picadely.UI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            var comprasService = new ComprasServices();
+            if (!comprasService.IsValid())
+                throw new Exception("Error de datos");
+
             var usuario = Session["UsuarioLogueado"] as Usuario;
             if (usuario == null)
                 Response.Redirect("Login.aspx");
