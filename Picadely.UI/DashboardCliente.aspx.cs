@@ -12,7 +12,8 @@ namespace Picadely.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             var usuario = Session["UsuarioLogueado"] as Usuario;
-            if (usuario.Tipo != UsuarioTipo.Cliente.ToString())
+            if (usuario == null ||
+                usuario.Tipo != UsuarioTipo.Cliente.ToString())
                 Response.Redirect("Login.aspx");
 
             var picadasServices = new PicadasServices();
@@ -20,6 +21,7 @@ namespace Picadely.UI
 
             GridView.DataSource = picadas;
             GridView.DataBind();
+            UserId.Value = usuario.Id.ToString();
         }
 
         protected void GridView_SelectedIndexChanged(object sender, EventArgs e)

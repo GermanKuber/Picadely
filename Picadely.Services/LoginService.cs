@@ -6,6 +6,26 @@ namespace Picadely.Services
 {
     public class LoginService
     {
+        public Usuario GetUsuarioById(int id)
+        {
+            var sqlService = new SqlAccessService();
+            var hashService = new HashService();
+
+
+            var dataTable = sqlService.SelectData("Usuarios", new Parameters()
+                .Add("Id", id)
+                .Send());
+            var user = new Usuario
+            {
+                Apellido = dataTable.Rows[0]["Apellido"].ToString(),
+                Email = dataTable.Rows[0]["Email"].ToString(),
+                Nombre = dataTable.Rows[0]["Nombre"].ToString(),
+                Tipo = dataTable.Rows[0]["Tipo"].ToString(),
+                Direccion = dataTable.Rows[0]["Direccion"].ToString(),
+                Id = int.Parse(dataTable.Rows[0]["Id"].ToString()),
+            };
+            return user;
+        }
         public Usuario LoginAsync(string email, string password)
         {
 
