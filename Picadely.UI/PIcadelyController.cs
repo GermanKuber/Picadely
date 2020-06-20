@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
+
 using Picadely.Entities;
 using Picadely.Services;
 
@@ -19,10 +20,10 @@ namespace Picadely.UI
     }
     public class PicadelyController : ApiController
     {
-       
+
         // POST api/<controller>
         [HttpPost]
-        public IHttpActionResult Post([FromBody]CompraPicadaDto compraPicada)
+        public IHttpActionResult Post([FromBody] CompraPicadaDto compraPicada)
         {
 
             new ComprasServices().Comprar(new LoginService().GetUsuarioById(compraPicada.UsuarioId),
@@ -35,35 +36,19 @@ namespace Picadely.UI
         public HttpResponseMessage Get()
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-
-            //Set the File Path.
             string filePath = @"C:\picada\picada.xml";
-
-            //Check whether File exists.
             if (!File.Exists(filePath))
             {
-                //Throw 404 (Not Found) exception if File not found.
                 response.StatusCode = HttpStatusCode.NotFound;
                 response.ReasonPhrase = string.Format("File not found: {0} .", "Picadas.xml");
                 throw new HttpResponseException(response);
             }
-
-            //Read the File into a Byte Array.
             byte[] bytes = File.ReadAllBytes(filePath);
-
-            //Set the Response Content.
             response.Content = new ByteArrayContent(bytes);
-
-            //Set the Response Content Length.
             response.Content.Headers.ContentLength = bytes.LongLength;
-
-            //Set the Content Disposition Header Value and FileName.
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             response.Content.Headers.ContentDisposition.FileName = "Picadas.xml";
-
-            //Set the File Content Type.
             response.Content.Headers.ContentType = new MediaTypeHeaderValue(MimeMapping.GetMimeMapping("Picadas.xml"));
-            //return response;
             return response;
         }
     }
