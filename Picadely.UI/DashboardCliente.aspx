@@ -5,7 +5,20 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
 
-
+        function downlad() {
+            fetch('https://localhost:44392/api/picadely/', {
+                method: 'GET',
+            }).then(response => response.blob())
+                .then(blob => {
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Picadas.xml";
+                    document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+                    a.click();
+                    a.remove();  //afterwards we remove the element again         
+                });
+        }
         function comprar(id) {
             var userId = parseInt($("#MainContent_UserId").val());
             fetch('https://localhost:44392/api/picadely/', {
@@ -31,10 +44,13 @@
             <asp:TemplateField HeaderText="Id">
                 <ItemTemplate>
                     <input type="button" class="btn btn-primary" onclick="comprar(<%#Eval("Id")%>)" value="Comprar" data-picada-id="<%#Eval("Id")%>" />
-
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
     </asp:GridView>
+    <asp:Label runat="server">Comensales</asp:Label>
+    <asp:TextBox runat="server" ID="TxtComensales">
+    </asp:TextBox>
+    <input type="button" class="btn btn-primary" onclick="downlad()" value="Descargar" />
 </asp:Content>
 

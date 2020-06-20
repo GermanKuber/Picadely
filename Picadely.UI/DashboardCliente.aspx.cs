@@ -1,5 +1,6 @@
 ﻿using Picadely.Entities;
 using Picadely.Services;
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,9 @@ namespace Picadely.UI
 
             var picadasServices = new PicadasServices();
             var picadas = picadasServices.GetPicadas();
+
+            var comensales = picadasServices.GetComensalesFromXml();
+            TxtComensales.Text = string.Join(", ", comensales.Select(i => i.ToString()).ToArray());
 
             GridView.DataSource = picadas;
             GridView.DataBind();

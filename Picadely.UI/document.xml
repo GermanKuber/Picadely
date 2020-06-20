@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Catalogo>
+  <Picada Id="1" Comensales="10">Picada Grande</Picada>
+  <Picada Id="2" Comensales="2">Picada Chica</Picada>
+  <Picada Id="3" Comensales="6">Picada Mediana</Picada>
+  <Picada Id="4" Comensales="3">Quesos</Picada>
+  <Picada Id="5" Comensales="12">Quesos Grandes</Picada>
+</Catalogo>
