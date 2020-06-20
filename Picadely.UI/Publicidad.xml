@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Advertisements>
+	<Ad>
+		<ImageUrl>UAI.png</ImageUrl>
+		<NavigateUrl>https://uai.edu.ar/</NavigateUrl>
+		<Height>70</Height>
+		<AlternateText>
+			Universidad Abierta Interamericana
+		</AlternateText>
+		<Impressions>20</Impressions>
+		<Keyword>UAI</Keyword>
+	</Ad>
+
+	<Ad>
+		<ImageUrl>YouTube.png</ImageUrl>
+		<NavigateUrl>https://www.youtube.com/</NavigateUrl>
+		<Height>70</Height>
+		<AlternateText>YouTube</AlternateText>
+		<Impressions>20</Impressions>
+		<Keyword>YouTube</Keyword>
+	</Ad>
+</Advertisements>

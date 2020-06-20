@@ -19,6 +19,7 @@
 </head>
 <body>
     <form runat="server">
+        <asp:AdRotator  runat = "server" AdvertisementFile = "Publicidad.xml"  Target =  "_blank" />
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
