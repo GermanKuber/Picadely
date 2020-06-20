@@ -29,32 +29,25 @@ namespace Picadely.Services
                     Id = int.Parse(row["Id"].ToString())
                 });
             }
-            GenerarMenuEnXml(picadas);
 
             return picadas;
         }
+
         public List<int> GetComensalesFromXml()
         {
-            //Recuepera las picadas desde el xml y con xpath filtra los comensales
-            XPathDocument doc = new XPathDocument(HttpContext.Current.Server.MapPath("document.xml"));
+            XPathDocument doc = new XPathDocument(@"C:\picada\picada.xml");
             XPathNavigator xPathNavigator = doc.CreateNavigator();
             XPathNodeIterator iterator = xPathNavigator.Select("Catalogo/Picada/@Comensales");
-
             var comensales = new List<int>();
             foreach (XPathNavigator item in iterator)
                 comensales.Add(int.Parse(item.Value));
-
             return comensales;
         }
-        private void GenerarMenuEnXml(List<Picada> picadas)
+
+        public void GenerarMenuEnXml()
         {
-            //A partir de una lista de picadas genera un xml con el menu.
-            //EJ:
-            //<?xml version="1.0" encoding="UTF-8"?>
-            //<Catalogo>
-            //  <Picada Id="4" Comensales="3">Quesos</Picada>
-            //  <Picada Id="5" Comensales="12">Quesos Grandes</Picada>
-            //</Catalogo>
+            var picadas = GetPicadas();
+
             var doc = new XmlDocument();
             XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
 

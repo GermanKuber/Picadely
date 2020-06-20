@@ -27,7 +27,7 @@
 					</div>
 					
 					<div class="container-login100-form-btn">
-                          <asp:Button ID="BtnLogin" CssClass="login100-form-btn" runat="server" Text="Button" OnClick="BtnLogin_Click" />
+                          <asp:Button ID="BtnLogin" CssClass="login100-form-btn" runat="server" Text="Conectar" OnClick="BtnLogin_Click" />
 					</div>
 
 					

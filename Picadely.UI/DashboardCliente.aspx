@@ -14,33 +14,35 @@
                     var a = document.createElement('a');
                     a.href = url;
                     a.download = "Picadas.xml";
-                    document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+                    document.body.appendChild(a); 
                     a.click();
-                    a.remove();  //afterwards we remove the element again         
+                    a.remove();
                 });
         }
+
+
         function comprar(id) {
             var userId = parseInt($("#MainContent_UserId").val());
             fetch('https://localhost:44392/api/picadely/', {
-                method: 'POST', // or 'PUT'
+                method: 'POST', 
                 body: JSON.stringify({
                     PicadaId: id,
                     UsuarioId: userId
-                }), // data can be `string` or {object}!
+                }), 
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }).then(res => res.json())
                 .catch(error => console.error('Error:', error))
-                .then(response => alert("Acaba de realizar el pedido"));
+                .then(_ => alert("Acaba de realizar el pedido"));
         }
+
+
     </script>
     <asp:Label ID="Label1" runat="server" Text="Cliente"></asp:Label>
     <asp:HiddenField runat="server" ID="UserId" />
     <asp:GridView CssClass="table" HeaderStyle-CssClass="thead-dark" ID="GridView" runat="server" OnRowCommand="GridView_RowCommand" OnSelectedIndexChanged="GridView_SelectedIndexChanged">
         <Columns>
-
-
             <asp:TemplateField HeaderText="Id">
                 <ItemTemplate>
                     <input type="button" class="btn btn-primary" onclick="comprar(<%#Eval("Id")%>)" value="Comprar" data-picada-id="<%#Eval("Id")%>" />

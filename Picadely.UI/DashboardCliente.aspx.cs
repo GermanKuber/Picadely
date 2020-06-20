@@ -30,7 +30,6 @@ namespace Picadely.UI
 
         protected void GridView_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         protected void GridView_RowCommand(object sender, GridViewCommandEventArgs e)
