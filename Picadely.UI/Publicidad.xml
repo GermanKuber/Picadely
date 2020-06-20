@@ -3,7 +3,7 @@
 	<Ad>
 		<ImageUrl>UAI.png</ImageUrl>
 		<NavigateUrl>https://uai.edu.ar/</NavigateUrl>
-		<Height>90</Height>
+		<Height>70</Height>
 		<AlternateText>
 			Universidad Abierta Interamericana
 		</AlternateText>
@@ -14,7 +14,7 @@
 	<Ad>
 		<ImageUrl>YouTube.png</ImageUrl>
 		<NavigateUrl>https://www.youtube.com/</NavigateUrl>
-		<Height>90</Height>
+		<Height>70</Height>
 		<AlternateText>YouTube</AlternateText>
 		<Impressions>20</Impressions>
 		<Keyword>YouTube</Keyword>
