@@ -35,6 +35,7 @@ namespace Picadely.Services
 
         public List<int> GetComensalesFromXml()
         {
+            GenerarMenuEnXml();
             XPathDocument doc = new XPathDocument(@"C:\picada\picada.xml");
             XPathNavigator xPathNavigator = doc.CreateNavigator();
             XPathNodeIterator iterator = xPathNavigator.Select("Catalogo/Picada/@Comensales");
