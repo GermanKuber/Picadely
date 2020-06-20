@@ -16,8 +16,6 @@ namespace Picadely.UI
     public class PicadelyController : ApiController
     {
 
-
-
         [HttpPost]
         public IHttpActionResult Post([FromBody] CompraPicadaDto compraPicada)
         {
